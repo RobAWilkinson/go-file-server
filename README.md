@@ -19,6 +19,6 @@ In order to modify and change the RPC spec, you need to install `protobuf`. On O
 
 To generate that interface: `protoc -I rpc/ rpc/rpc.proto --go_out=plugins=grpc:rpc`
 
-Then you should be able to run the client and server in seperate terminals and hit `localhost:3030`
+Then you should be able to run the client and server in seperate terminals and hit `localhost:3030/test.txt`
 
 
