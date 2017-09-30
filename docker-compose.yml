@@ -1,0 +1,17 @@
+version: '2.1'
+
+services:
+  greeter_server:
+    image: greeter_server
+    build: ./greeter_server
+    ports:
+      - 5001:5001
+    volumes:
+      - './files:/go/src/app/files'
+  greeter_client:
+    image: greeter_client
+    build: ./greeter_client
+    links:
+      - greeter_server
+    ports:
+      - 3030:3030
