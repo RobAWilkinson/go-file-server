@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	pb "github.com/robawilkinson/go-file-server/rpc"
@@ -12,11 +13,16 @@ import (
 )
 
 const (
-	address     = "localhost:50051"
 	defaultName = "world"
 )
 
 func main() {
+	var address string
+	if os.Getenv("RPC_ADDRESS") != "" {
+		address = os.Getenv("RPC_ADDRESS")
+	} else {
+		address = "localhost:50051"
+	}
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
@@ -26,7 +32,7 @@ func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
 		path := req.URL.Path
 		Filename := strings.Replace(path, "/", "", 1)
-		c := pb.NewFileServerClient(conn)
+		c := pb.NewFilesClient(conn)
 		r, err := c.GetImage(context.Background(), &pb.Request{Filename: Filename})
 		if err != nil {
 			log.Fatalf("could not greet: %v", err)

@@ -4,8 +4,6 @@ services:
   greeter_server:
     image: greeter_server
     build: ./greeter_server
-    ports:
-      - 5001:5001
     volumes:
       - './files:/go/src/app/files'
   greeter_client:
@@ -15,3 +13,5 @@ services:
       - greeter_server
     ports:
       - 3030:3030
+    environment:
+      - "RPC_ADDRESS=greeter_server:5051"

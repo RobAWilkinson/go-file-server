@@ -14,16 +14,18 @@ import (
 )
 
 const (
-	port = ":50051"
+	port = ":5051"
 )
 
 type server struct{}
 
-func (s *server) GetImage(in *pb.Request, server pb.FileServer_GetImageServer) error {
-	data, err := ioutil.ReadFile(in.Filename)
+func (s *server) GetImage(in *pb.Request, server pb.Files_GetImageServer) error {
+	Filename := "./files/" + in.Filename
+	data, err := ioutil.ReadFile(Filename)
 	buffer := make([]byte, 512)
 
-	file, err := os.Open(in.Filename)
+	file, err := os.Open(Filename)
+
 	if err != nil {
 		log.Panic("error", err)
 	}
@@ -45,7 +47,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterFileServerServer(s, &server{})
+	pb.RegisterFilesServer(s, &server{})
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
