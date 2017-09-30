@@ -17,12 +17,9 @@ const (
 	port = ":50051"
 )
 
-// server is used to implement helloworld.GreeterServer.
 type server struct{}
 
-// SayHello implements helloworld.GreeterServer
 func (s *server) GetImage(in *pb.Request, server pb.FileServer_GetImageServer) error {
-	// server.Send(&pb.HelloReply{Message: "Hello " + in.Method})
 	data, err := ioutil.ReadFile(in.Filename)
 	buffer := make([]byte, 512)
 
@@ -49,7 +46,6 @@ func main() {
 	}
 	s := grpc.NewServer()
 	pb.RegisterFileServerServer(s, &server{})
-	// Register reflection service on gRPC server.
 	reflection.Register(s)
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)

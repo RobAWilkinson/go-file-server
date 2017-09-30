@@ -21,7 +21,7 @@ option java_outer_classname = "HelloWorldProto";
 package rpc;
 
 // The greeting service definition.
-service FileServer {
+service Greeter {
   // Sends a greeting
   rpc GetImage(Request) returns (stream Picture) {}
 }
